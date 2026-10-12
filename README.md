@@ -1,5 +1,7 @@
 # mpd_coverwall
 
+THIS IS A WORK IN PROGRESS
+
 Small script to set your wallpaper to the album art of the currently playing
 [`mpd`](https://www.musicpd.org/) song. Currently it looks for embedded art
 first, and then falls back to a file with a name containing `folder` or `cover`
