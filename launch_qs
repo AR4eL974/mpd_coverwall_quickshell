@@ -1,0 +1,11 @@
+#!/bin/bash
+
+count=$(qs list -p . | wc -l)
+echo "count=$count"
+qs -p ${HOME}/.config/mpd_quickshell &
+if [[ count -gt 3 ]]; then
+	sleep 1; qs kill -p ${HOME}/.config/mpd_quickshell
+	echo "j'ai bien tué qs"
+else
+	echo "j'ai pas tué qs"
+fi

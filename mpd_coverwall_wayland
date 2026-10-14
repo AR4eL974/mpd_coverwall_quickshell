@@ -1,34 +1,12 @@
 #!/usr/bin/env bash
-
+source ~/.config/mpd_quickshell/config
 # Config
-COVER="/tmp/cover.png"
-COVER_TMP="/tmp/cover_old.png"
-COVER_FINAL="/tmp/cover_final.png"
-MUSIC_DIR="${HOME}/music"
-WALLPAPER="${HOME}/pics/wallpapers/tyasui/FALLBACK.jpg"
-MAX_HEIGHT=.8
-BORDER_COLOR="white"
-BORDER_SIZE=10
-BLUR=6
-WALLPAPER_COMMAND="swww img"
-
-WIDTH=$(wlr-randr | grep current | awk '{print $1}' | cut -d 'x' -f1)
-HEIGHT=$(wlr-randr | grep current | awk '{print $1}' | cut -d 'x' -f2)
-SCALE=$(wlr-randr | grep Scale | awk '{print $2}')
-
-if [[ $MPD_HOST == "" ]]; then
-  MPD_HOST="127.0.0.1"
-fi
-
-if [[ $MPD_PORT == "" ]]; then
-  MPD_PORT=6600
-fi
 
 get_cover() {
   mv $COVER "${COVER_TMP}"
-  music_file="${MUSIC_DIR}/$(mpc current -f %file%)"
+  music_file="${MUSIC_DIR}/$(mpc --host=$MPD_HOST current -f %file%)"
   album_dir=$(echo "${music_file}" | sed "s/\/[^\/]*$//")
-  current_song="$(mpc current)"
+  current_song="$(mpc --host=$MPD_HOST current)"
   if ffmpeg -i "${music_file}" "${COVER}" -y &> /dev/null; then
     echo "Found embedded art for $current_song"
   else
@@ -41,27 +19,34 @@ get_cover() {
   return $((! $?))
 }
 
+get_title() {
+	echo "$(mpc --host=$MPD_HOST --format %title% | head -n 1)" > ~/.config/mpd_quickshell/title.json
+}
+
+get_artist() {
+	echo "$(mpc --host=$MPD_HOST --format %artist% | head -n 1)" > ~/.config/mpd_quickshell/artist.json
+}
+
+
 MAGICK_OCL_DEVICE=true
 while "true"; do
-  status="$(mpc status %state%)"
+  status="$(mpc --host=$MPD_HOST status %state%)"
   if get_cover; then
     echo "Cover different from last, changing wallpaper"
     if [[ ${status} == "playing" || ${status} == "paused" ]]; then
-      magick "${COVER}" -write mpr:img +delete \
-        \( mpr:img -blur 0x${BLUR} -resize "${WIDTH}x${HEIGHT}^" +repage \) \
-        \( mpr:img -resize "%[fx:${HEIGHT} * ${MAX_HEIGHT}]\>" -bordercolor ${BORDER_COLOR} -border ${BORDER_SIZE} \) \
-        \( +clone -background black -shadow 50x3+10+10 \) \
-        \( -clone 2,1 -background none -layers merge +repage \) \
-        -delete 1,2 \
-        -gravity center -compose over -composite "${COVER_FINAL}"
-      eval "$WALLPAPER_COMMAND ${COVER_FINAL} &"
-    elif [[ ${status} == "MPD error: Connection refused" ]]; then
+      get_title
+      get_artist
+      eval "$QUICKSHELL_COMMAND &"
+      elif [[ ${status} == "MPD error: Connection refused" ]]; then
       sleep 1
       continue
     else
       echo "mpd status: $status"
-      eval "$WALLPAPER_COMMAND ${WALLPAPER} &"
+      eval "$QUICKSHELL_COMMAND &"
+      get_title
+      get_artist
     fi
   fi
-  mpc current --wait > /dev/null
+  mpc --host=$MPD_HOST current --wait > /dev/null
 done
+
