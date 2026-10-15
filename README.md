@@ -2,25 +2,31 @@
 
 THIS IS A WORK IN PROGRESS
 
-Small script to set your wallpaper to the album art of the currently playing
+QuickShell mp3 player widget that displays the album art of the currently playing
 [`mpd`](https://www.musicpd.org/) song. Currently it looks for embedded art
 first, and then falls back to a file with a name containing `folder` or `cover`
 in the same folder as the music file.
 
-The size depends on the size of the image, and is scaled down to 80% of the
-monitor height if too large.
 
-![example](./screenshot.png)
+
+
+![example](example.png)
 
 ## Dependencies
 
-`imagemagick xrandr xwallpaper mpc`
+`mpd, qs, ffmpeg`
 
-## Installation
+# AUTOMATED INSTALL SCRIPT
 
-Run the script continuously somewhere. Personally I do this by putting the
-following in my `.xinitrc`:
+#### Recommended if you just want to install the widget and use it without checking how it works
 
-```sh
-nohup $HOME/code/mpd_coverwall/mpd_coverwall >/dev/null 2>&1 &
+(Note: This method requires having curl installed)
 ```
+cd
+curl -o install.sh https://raw.githubusercontent.com/AR4eL974/mpd_quickshell_widget/refs/heads/main/install.sh
+chmod +x install.sh
+./install.sh
+```
+
+# NO AI IN THIS CODE
+This code has been made without the use of any generative AI because the author is deeply concerned by the effect AI has on our society and our planet, any modifications by contributors who use generative AI will NOT be accepted.
