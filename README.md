@@ -23,7 +23,7 @@ in the same folder as the music file.
 (Note: This method requires having curl installed)
 ```
 cd
-curl -o install.sh https://raw.githubusercontent.com/AR4eL974/mpd_quickshell_widget/refs/heads/main/install.sh
+curl -o install.sh https://raw.githubusercontent.com/AR4eL974/mpd_quickshell_widget/refs/heads/master/install.sh
 chmod +x install.sh
 ./install.sh
 ```
