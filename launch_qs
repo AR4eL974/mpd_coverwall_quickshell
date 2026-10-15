@@ -1,11 +1,9 @@
 #!/bin/bash
-
-count=$(qs list -p . | wc -l)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $SCRIPT_DIR/config
+count=$(qs list -p ${ROOT_PATH} | wc -l)
 echo "count=$count"
-qs -p ${HOME}/.config/mpd_quickshell &
+qs -p ${ROOT_PATH} &
 if [[ count -gt 3 ]]; then
-	sleep 1; qs kill -p ${HOME}/.config/mpd_quickshell
-	echo "j'ai bien tué qs"
-else
-	echo "j'ai pas tué qs"
+	sleep 1; qs kill -p ${ROOT_PATH}
 fi

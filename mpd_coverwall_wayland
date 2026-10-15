@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
-source ~/.config/mpd_quickshell/config
+#!/bin/bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $SCRIPT_DIR/config
 # Config
 
 get_cover() {
-  mv $COVER "${COVER_TMP}"
+	echo "COVER = ${COVER}"
+	echo "COVER_TMP = ${COVER_TMP}"
+  mv "${COVER}" "${COVER_TMP}"
   music_file="${MUSIC_DIR}/$(mpc --host=$MPD_HOST current -f %file%)"
   album_dir=$(echo "${music_file}" | sed "s/\/[^\/]*$//")
   current_song="$(mpc --host=$MPD_HOST current)"
@@ -20,15 +23,16 @@ get_cover() {
 }
 
 get_title() {
-	echo "$(mpc --host=$MPD_HOST --format %title% | head -n 1)" > ~/.config/mpd_quickshell/title.json
+	echo "$(mpc --host=$MPD_HOST --format %title% | head -n 1)" > ${ROOT_PATH}/title.json
 }
 
 get_artist() {
-	echo "$(mpc --host=$MPD_HOST --format %artist% | head -n 1)" > ~/.config/mpd_quickshell/artist.json
+	echo "$(mpc --host=$MPD_HOST --format %artist% | head -n 1)" > ${ROOT_PATH}/artist.json
 }
 
 
 MAGICK_OCL_DEVICE=true
+qs -p ${ROOT_PATH} &
 while "true"; do
   status="$(mpc --host=$MPD_HOST status %state%)"
   if get_cover; then
