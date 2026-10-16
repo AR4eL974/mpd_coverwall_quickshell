@@ -117,7 +117,7 @@ installation(){
         chmod +x launch_qs
         sleep 1
         echo ""
-        echo "installation complete, the installer will now remove itself"
+        echo "installation complete, the installer will now remove itself, the widget will start at next login"
         sleep 1
         rm install.sh
         cd 
