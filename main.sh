@@ -4,8 +4,6 @@ source $SCRIPT_DIR/config
 # Config
 
 get_cover() {
-	echo "COVER = ${COVER}"
-	echo "COVER_TMP = ${COVER_TMP}"
 	if [[ $(ls -d "${ROOT_PATH}"/* | grep "${COVER}") != "" ]] then
   		mv "${COVER}" "${COVER_TMP}"
   	fi
