@@ -2,6 +2,4 @@
 ROOT_PATH="${HOME}/.config/mpd_quickshell_widget"
 COVER="${ROOT_PATH}/cover.png"
 COVER_TMP="${ROOT_PATH}/cover_old.png"
-MUSIC_DIR="${HOME}your music dir"
-MPD_HOST="your mpd host"
 QUICKSHELL_COMMAND="${ROOT_PATH}/launch_qs"

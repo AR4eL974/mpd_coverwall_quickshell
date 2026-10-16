@@ -57,9 +57,43 @@ distro_installation (){
  
 }
 
+
+fill_config (){
+
+	echo "Making the config files..."
+	echo "Step 1: MPD music directory"
+	echo "Where is your music stored?"
+	echo ""
+	printf "Enter the path: "
+	read music_dir
+	echo
+	echo "MUSIC_DIR=\"$music_dir\"" >> ~/.config/mpd_quickshell_widget/config
+	echo ""
+	echo "Step 2: MPD host"
+	echo "where is your MPD instance running ? (don't add the \"~\", the installer expects you to start with your home dir, or you can just start with \"\/\""
+	echo " [ I ] I know the IP "
+	echo " [ D ] I have a domain name "
+	read -sn 1 host_type
+	if [[ $host_type == 'i' ]] || [[ $host_type == 'I' ]] then
+		printf "So you know your instance's IP adress, type it here: "
+		read ip
+		echo "writing IP to config file"
+		echo "MPD_HOST=\"$ip\"" >> ~/.config/mpd_quickshell_widget/config
+
+	elif [[ $host_type == 'd' ]] || [[ $host_type == 'D' ]] then
+
+		printf "So you have a domain name, type it here: "
+		read domain_name
+		echo "writing domain name to config file"
+		echo "MPD_HOST=\"\$(dig +short $domain_name)\"" >> ~/.config/mpd_quickshell_widget/config
+
+	fi
+	echo "config completed, finalizing installation..."
+	sleep 2
+}
+
 installation(){
 
-        fichier="soundcloud.sh"
         echo ""
         echo ""
         echo "getting the last version of the widget from github..."
@@ -74,6 +108,7 @@ installation(){
         rm example.png
         rm LICENSE
         rm -rf .git/
+	fill_config
         sleep 1
         echo ""
         echo ""
