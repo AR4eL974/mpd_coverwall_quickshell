@@ -6,7 +6,9 @@ source $SCRIPT_DIR/config
 get_cover() {
 	echo "COVER = ${COVER}"
 	echo "COVER_TMP = ${COVER_TMP}"
-  mv "${COVER}" "${COVER_TMP}"
+	if [[ $(ls -d "${ROOT_PATH}"/* | grep "${COVER}") != "" ]] then
+  		mv "${COVER}" "${COVER_TMP}"
+  	fi
   music_file="${MUSIC_DIR}/$(mpc --host=$MPD_HOST current -f %file%)"
   album_dir=$(echo "${music_file}" | sed "s/\/[^\/]*$//")
   current_song="$(mpc --host=$MPD_HOST current)"
